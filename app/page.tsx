@@ -9,6 +9,315 @@ import {
 } from "@/lib/api";
 import toast from "react-hot-toast";
 
+//Shimmer base style
+const shimmer: React.CSSProperties = {
+  background:
+    "linear-gradient(90deg, var(--surface) 25%, #1a2744 50%, var(--surface) 75%)",
+  backgroundSize: "200% 100%",
+  animation: "shimmer 1.6s infinite",
+  borderRadius: 8,
+};
+
+// Skeleton components
+function SkeletonHero() {
+  return (
+    <div
+      style={{
+        textAlign: "center",
+        width: "100%",
+        maxWidth: 860,
+        margin: "0 auto",
+      }}
+    >
+      {/* Status badge */}
+      <div
+        style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}
+      >
+        <div
+          style={{ ...shimmer, height: 28, width: 220, borderRadius: 100 }}
+        />
+      </div>
+      {/* Name */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 12,
+          marginBottom: 20,
+        }}
+      >
+        <div
+          style={{
+            ...shimmer,
+            height: "clamp(44px,9vw,80px)",
+            width: "70%",
+            borderRadius: 8,
+          }}
+        />
+        <div
+          style={{
+            ...shimmer,
+            height: "clamp(44px,9vw,80px)",
+            width: "50%",
+            borderRadius: 8,
+          }}
+        />
+      </div>
+      {/* Badges */}
+      <div
+        style={{
+          display: "flex",
+          gap: 8,
+          justifyContent: "center",
+          marginBottom: 20,
+        }}
+      >
+        {[140, 160, 120].map((w, i) => (
+          <div
+            key={i}
+            style={{ ...shimmer, height: 28, width: w, borderRadius: 4 }}
+          />
+        ))}
+      </div>
+      {/* Bio */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 8,
+          marginBottom: 36,
+        }}
+      >
+        <div style={{ ...shimmer, height: 16, width: "60%" }} />
+        <div style={{ ...shimmer, height: 16, width: "50%" }} />
+        <div style={{ ...shimmer, height: 16, width: "40%" }} />
+      </div>
+      {/* CTAs */}
+      <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+        <div style={{ ...shimmer, height: 44, width: 140, borderRadius: 6 }} />
+        <div style={{ ...shimmer, height: 44, width: 120, borderRadius: 6 }} />
+      </div>
+    </div>
+  );
+}
+
+function SkeletonSkills() {
+  return (
+    <div className="skills-grid">
+      {[1, 2, 3, 4].map((i) => (
+        <div
+          key={i}
+          style={{
+            background: "var(--card)",
+            border: "1px solid var(--border)",
+            borderRadius: 12,
+            padding: 20,
+          }}
+        >
+          <div
+            style={{
+              ...shimmer,
+              height: 12,
+              width: 80,
+              marginBottom: 16,
+              borderRadius: 4,
+            }}
+          />
+          {[90, 75, 85, 70, 80].map((w, j) => (
+            <div key={j} style={{ marginBottom: 14 }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: 6,
+                }}
+              >
+                <div
+                  style={{
+                    ...shimmer,
+                    height: 12,
+                    width: `${w * 0.7}%`,
+                    borderRadius: 3,
+                  }}
+                />
+                <div
+                  style={{ ...shimmer, height: 12, width: 32, borderRadius: 3 }}
+                />
+              </div>
+              <div
+                style={{
+                  height: 2,
+                  background: "var(--border)",
+                  borderRadius: 2,
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SkeletonProjects() {
+  return (
+    <div className="projects-grid">
+      {[1, 2, 3].map((i) => (
+        <div
+          key={i}
+          style={{
+            background: "var(--card)",
+            border: "1px solid var(--border)",
+            borderRadius: 13,
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ ...shimmer, height: 170, borderRadius: 0 }} />
+          <div style={{ padding: 20 }}>
+            <div
+              style={{
+                ...shimmer,
+                height: 20,
+                width: "70%",
+                marginBottom: 10,
+                borderRadius: 4,
+              }}
+            />
+            <div
+              style={{
+                ...shimmer,
+                height: 13,
+                width: "100%",
+                marginBottom: 6,
+                borderRadius: 3,
+              }}
+            />
+            <div
+              style={{
+                ...shimmer,
+                height: 13,
+                width: "80%",
+                marginBottom: 14,
+                borderRadius: 3,
+              }}
+            />
+            <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
+              {[60, 70, 50].map((w, j) => (
+                <div
+                  key={j}
+                  style={{ ...shimmer, height: 20, width: w, borderRadius: 3 }}
+                />
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: 16 }}>
+              <div
+                style={{ ...shimmer, height: 14, width: 44, borderRadius: 3 }}
+              />
+              <div
+                style={{ ...shimmer, height: 14, width: 56, borderRadius: 3 }}
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SkeletonExperience() {
+  return (
+    <div className="timeline">
+      <div className="timeline-line" />
+      {[1, 2].map((i) => (
+        <div key={i} className="timeline-item">
+          <div
+            className="timeline-dot"
+            style={{ background: "var(--surface)" }}
+          />
+          <div
+            style={{
+              ...shimmer,
+              height: 11,
+              width: 220,
+              marginBottom: 10,
+              borderRadius: 3,
+            }}
+          />
+          <div
+            style={{
+              ...shimmer,
+              height: 22,
+              width: "55%",
+              marginBottom: 6,
+              borderRadius: 4,
+            }}
+          />
+          <div
+            style={{
+              ...shimmer,
+              height: 13,
+              width: "35%",
+              marginBottom: 12,
+              borderRadius: 3,
+            }}
+          />
+          <div
+            style={{
+              ...shimmer,
+              height: 13,
+              width: "100%",
+              marginBottom: 6,
+              borderRadius: 3,
+            }}
+          />
+          <div
+            style={{
+              ...shimmer,
+              height: 13,
+              width: "90%",
+              marginBottom: 6,
+              borderRadius: 3,
+            }}
+          />
+          <div
+            style={{
+              ...shimmer,
+              height: 13,
+              width: "75%",
+              marginBottom: 16,
+              borderRadius: 3,
+            }}
+          />
+          {[1, 2, 3].map((j) => (
+            <div key={j} style={{ display: "flex", gap: 8, marginBottom: 7 }}>
+              <div
+                style={{
+                  ...shimmer,
+                  height: 13,
+                  width: 12,
+                  borderRadius: 2,
+                  flexShrink: 0,
+                }}
+              />
+              <div
+                style={{
+                  ...shimmer,
+                  height: 13,
+                  width: `${60 + j * 10}%`,
+                  borderRadius: 3,
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+//Main Page
 export default function PortfolioPage() {
   const [profile, setProfile] = useState<any>(null);
   const [projects, setProjects] = useState<any[]>([]);
@@ -24,19 +333,32 @@ export default function PortfolioPage() {
   const [navScrolled, setNav] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Loading states per section
+  const [loadingProfile, setLoadingProfile] = useState(true);
+  const [loadingProjects, setLoadingProjects] = useState(true);
+  const [loadingSkills, setLoadingSkills] = useState(true);
+  const [loadingExp, setLoadingExp] = useState(true);
+
   useEffect(() => {
     getProfile()
       .then((r) => setProfile(r.data.profile))
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoadingProfile(false));
+
     getProjects()
       .then((r) => setProjects(r.data.projects))
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoadingProjects(false));
+
     getSkills()
       .then((r) => setSkills(r.data.skills))
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoadingSkills(false));
+
     getExperiences()
       .then((r) => setExps(r.data.experiences))
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoadingExp(false));
 
     const onScroll = () => setNav(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
@@ -131,21 +453,25 @@ export default function PortfolioPage() {
           transition: "all .3s",
         }}
       >
-        {/* Logo */}
-        <a
-          href="#"
-          style={{
-            fontFamily: "Georgia,serif",
-            fontSize: 22,
-            fontStyle: "italic",
-            color: "var(--accent)",
-            letterSpacing: 1,
-            textDecoration: "none",
-          }}
-        >
-          {profile?.name?.split(" ")[0] || "Portfolio"}
-          <span style={{ color: "var(--accent3)" }}>.</span>
-        </a>
+        {/* Logo — shimmer while loading */}
+        {loadingProfile ? (
+          <div style={{ ...shimmer, height: 24, width: 90, borderRadius: 4 }} />
+        ) : (
+          <a
+            href="#"
+            style={{
+              fontFamily: "Georgia,serif",
+              fontSize: 22,
+              fontStyle: "italic",
+              color: "var(--accent)",
+              letterSpacing: 1,
+              textDecoration: "none",
+            }}
+          >
+            {profile?.name?.split(" ")[0] || "Portfolio"}
+            <span style={{ color: "var(--accent3)" }}>.</span>
+          </a>
+        )}
 
         {/* Desktop nav links */}
         <div
@@ -171,30 +497,6 @@ export default function PortfolioPage() {
               {s}
             </a>
           ))}
-          {/*<a
-            href="/admin"
-            style={{
-              fontFamily: "monospace",
-              fontSize: 11,
-              padding: "6px 14px",
-              border: "1px solid var(--accent)",
-              borderRadius: 4,
-              color: "var(--accent)",
-              textDecoration: "none",
-              transition: "all .2s",
-            }}
-            onMouseOver={(e) => {
-              (e.currentTarget as HTMLElement).style.background =
-                "var(--accent)";
-              (e.currentTarget as HTMLElement).style.color = "#000";
-            }}
-            onMouseOut={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "transparent";
-              (e.currentTarget as HTMLElement).style.color = "var(--accent)";
-            }}
-          >
-            Admin ↗
-          </a>*/}
         </div>
 
         {/* Hamburger (mobile) */}
@@ -219,7 +521,6 @@ export default function PortfolioPage() {
               height: 2,
               background: menuOpen ? "transparent" : "var(--text)",
               transition: "all .3s",
-              transform: menuOpen ? "none" : "none",
             }}
           />
           <span
@@ -286,7 +587,7 @@ export default function PortfolioPage() {
             {s}
           </a>
         ))}
-        <a
+        {/* <a
           href="/admin"
           onClick={() => setMenuOpen(false)}
           style={{
@@ -304,7 +605,7 @@ export default function PortfolioPage() {
           }}
         >
           Admin Panel ↗
-        </a>
+        </a> */}
       </div>
 
       {/* ── HERO ── */}
@@ -318,173 +619,177 @@ export default function PortfolioPage() {
           zIndex: 2,
         }}
       >
-        <div style={{ maxWidth: 860, width: "100%", textAlign: "center" }}>
-          {/* Status badge */}
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              fontFamily: "monospace",
-              fontSize: 10,
-              color: "var(--accent)",
-              letterSpacing: ".16em",
-              textTransform: "uppercase",
-              marginBottom: 24,
-              padding: "6px 14px",
-              border: "1px solid rgba(56,189,248,.3)",
-              borderRadius: 100,
-              animation: "fadeUp .5s ease both",
-              flexWrap: "wrap",
-              justifyContent: "center",
-            }}
-          >
-            <span
+        {loadingProfile ? (
+          <SkeletonHero />
+        ) : (
+          <div style={{ maxWidth: 860, width: "100%", textAlign: "center" }}>
+            {/* Status badge */}
+            <div
               style={{
-                width: 7,
-                height: 7,
-                background: profile?.available ? "var(--accent3)" : "#666",
-                borderRadius: "50%",
-                display: "inline-block",
-                flexShrink: 0,
-                boxShadow: profile?.available
-                  ? "0 0 6px var(--accent3)"
-                  : "none",
-              }}
-            />
-            {profile?.available ? "Available for work" : "Not available"} ·{" "}
-            {profile?.location || "Surat, Gujarat"}
-          </div>
-
-          <h1
-            style={{
-              fontFamily: "Georgia,serif",
-              fontSize: "clamp(44px,9vw,118px)",
-              lineHeight: 0.92,
-              marginBottom: 20,
-              animation: "fadeUp .5s .1s ease both",
-              animationFillMode: "both",
-              wordBreak: "break-word",
-            }}
-          >
-            {profile?.name || "Your Name"}
-          </h1>
-
-          {/* Badges */}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 8,
-              justifyContent: "center",
-              marginBottom: 20,
-              animation: "fadeUp .5s .18s ease both",
-              animationFillMode: "both",
-            }}
-          >
-            <span
-              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
                 fontFamily: "monospace",
-                fontSize: 11,
-                padding: "5px 12px",
-                borderRadius: 4,
+                fontSize: 10,
                 color: "var(--accent)",
-                border: "1px solid rgba(56,189,248,.4)",
-                background: "rgba(56,189,248,.06)",
-              }}
-            >
-              MERN Stack Dev
-            </span>
-            <span
-              style={{
-                fontFamily: "monospace",
-                fontSize: 11,
-                padding: "5px 12px",
-                borderRadius: 4,
-                color: "var(--accent3)",
-                border: "1px solid rgba(52,211,153,.4)",
-                background: "rgba(52,211,153,.06)",
-              }}
-            >
-              ✓ Internship Complete
-            </span>
-            <span
-              style={{
-                fontFamily: "monospace",
-                fontSize: 11,
-                padding: "5px 12px",
-                borderRadius: 4,
-                color: "var(--accent2)",
-                border: "1px solid rgba(129,140,248,.35)",
-                background: "rgba(129,140,248,.05)",
-              }}
-            >
-              Open to Work
-            </span>
-          </div>
-
-          <p
-            style={{
-              fontSize: "clamp(14px,2.2vw,17px)",
-              lineHeight: 1.8,
-              color: "var(--muted)",
-              maxWidth: 520,
-              margin: "0 auto 36px",
-              animation: "fadeUp .5s .26s ease both",
-              animationFillMode: "both",
-            }}
-          >
-            {profile?.bio ||
-              "MERN Stack Developer building fast, accessible web applications."}
-          </p>
-
-          {/* CTAs */}
-          <div
-            style={{
-              display: "flex",
-              gap: 12,
-              justifyContent: "center",
-              flexWrap: "wrap",
-              animation: "fadeUp .5s .34s ease both",
-              animationFillMode: "both",
-            }}
-          >
-            <a
-              href="#projects"
-              style={{
-                padding: "12px 24px",
-                background: "var(--accent)",
-                color: "#000",
-                fontFamily: "monospace",
-                fontSize: 11,
-                letterSpacing: ".1em",
+                letterSpacing: ".16em",
                 textTransform: "uppercase",
-                borderRadius: 6,
-                textDecoration: "none",
-                fontWeight: 700,
+                marginBottom: 24,
+                padding: "6px 14px",
+                border: "1px solid rgba(56,189,248,.3)",
+                borderRadius: 100,
+                animation: "fadeUp .5s ease both",
+                flexWrap: "wrap",
+                justifyContent: "center",
               }}
             >
-              See My Work ↓
-            </a>
-            <a
-              href="#contact"
+              <span
+                style={{
+                  width: 7,
+                  height: 7,
+                  background: profile?.available ? "var(--accent3)" : "#666",
+                  borderRadius: "50%",
+                  display: "inline-block",
+                  flexShrink: 0,
+                  boxShadow: profile?.available
+                    ? "0 0 6px var(--accent3)"
+                    : "none",
+                }}
+              />
+              {profile?.available ? "Available for work" : "Not available"} ·{" "}
+              {profile?.location || "Surat, Gujarat"}
+            </div>
+
+            <h1
               style={{
-                padding: "12px 24px",
-                background: "transparent",
-                color: "var(--text)",
-                fontFamily: "monospace",
-                fontSize: 11,
-                letterSpacing: ".1em",
-                textTransform: "uppercase",
-                border: "1px solid var(--border)",
-                borderRadius: 6,
-                textDecoration: "none",
+                fontFamily: "Georgia,serif",
+                fontSize: "clamp(44px,9vw,118px)",
+                lineHeight: 0.92,
+                marginBottom: 20,
+                animation: "fadeUp .5s .1s ease both",
+                animationFillMode: "both",
+                wordBreak: "break-word",
               }}
             >
-              Let's Talk →
-            </a>
+              {profile?.name || "Your Name"}
+            </h1>
+
+            {/* Badges */}
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 8,
+                justifyContent: "center",
+                marginBottom: 20,
+                animation: "fadeUp .5s .18s ease both",
+                animationFillMode: "both",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: 11,
+                  padding: "5px 12px",
+                  borderRadius: 4,
+                  color: "var(--accent)",
+                  border: "1px solid rgba(56,189,248,.4)",
+                  background: "rgba(56,189,248,.06)",
+                }}
+              >
+                MERN Stack Dev
+              </span>
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: 11,
+                  padding: "5px 12px",
+                  borderRadius: 4,
+                  color: "var(--accent3)",
+                  border: "1px solid rgba(52,211,153,.4)",
+                  background: "rgba(52,211,153,.06)",
+                }}
+              >
+                ✓ Internship Complete
+              </span>
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: 11,
+                  padding: "5px 12px",
+                  borderRadius: 4,
+                  color: "var(--accent2)",
+                  border: "1px solid rgba(129,140,248,.35)",
+                  background: "rgba(129,140,248,.05)",
+                }}
+              >
+                Open to Work
+              </span>
+            </div>
+
+            <p
+              style={{
+                fontSize: "clamp(14px,2.2vw,17px)",
+                lineHeight: 1.8,
+                color: "var(--muted)",
+                maxWidth: 520,
+                margin: "0 auto 36px",
+                animation: "fadeUp .5s .26s ease both",
+                animationFillMode: "both",
+              }}
+            >
+              {profile?.bio ||
+                "MERN Stack Developer building fast, accessible web applications."}
+            </p>
+
+            {/* CTAs */}
+            <div
+              style={{
+                display: "flex",
+                gap: 12,
+                justifyContent: "center",
+                flexWrap: "wrap",
+                animation: "fadeUp .5s .34s ease both",
+                animationFillMode: "both",
+              }}
+            >
+              <a
+                href="#projects"
+                style={{
+                  padding: "12px 24px",
+                  background: "var(--accent)",
+                  color: "#000",
+                  fontFamily: "monospace",
+                  fontSize: 11,
+                  letterSpacing: ".1em",
+                  textTransform: "uppercase",
+                  borderRadius: 6,
+                  textDecoration: "none",
+                  fontWeight: 700,
+                }}
+              >
+                See My Work ↓
+              </a>
+              <a
+                href="#contact"
+                style={{
+                  padding: "12px 24px",
+                  background: "transparent",
+                  color: "var(--text)",
+                  fontFamily: "monospace",
+                  fontSize: 11,
+                  letterSpacing: ".1em",
+                  textTransform: "uppercase",
+                  border: "1px solid var(--border)",
+                  borderRadius: 6,
+                  textDecoration: "none",
+                }}
+              >
+                Let's Talk →
+              </a>
+            </div>
           </div>
-        </div>
+        )}
       </section>
 
       {/* ── MARQUEE ── */}
@@ -569,79 +874,91 @@ export default function PortfolioPage() {
           <h2 className="section-heading">
             Skills &amp; <span style={{ color: "var(--accent)" }}>Stack.</span>
           </h2>
-          <div className="skills-grid">
-            {Object.entries(grouped).map(([cat, catSkills]: [string, any]) => (
-              <div
-                key={cat}
-                style={{
-                  background: "var(--card)",
-                  border: "1px solid var(--border)",
-                  borderRadius: 12,
-                  padding: 20,
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "monospace",
-                    fontSize: 10,
-                    letterSpacing: ".14em",
-                    textTransform: "uppercase",
-                    color: "var(--accent)",
-                    marginBottom: 16,
-                  }}
-                >
-                  {cat}
-                </div>
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 12 }}
-                >
-                  {catSkills.map((sk: any) => (
-                    <div key={sk._id}>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          marginBottom: 5,
-                        }}
-                      >
-                        <span style={{ fontSize: 13, color: "var(--text)" }}>
-                          {sk.name}
-                        </span>
-                        <span
-                          style={{
-                            fontFamily: "monospace",
-                            fontSize: 11,
-                            color: "var(--accent)",
-                          }}
-                        >
-                          {sk.level}%
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          height: 2,
-                          background: "var(--border)",
-                          borderRadius: 2,
-                          overflow: "hidden",
-                        }}
-                      >
-                        <div
-                          style={{
-                            height: "100%",
-                            width: `${sk.level}%`,
-                            background:
-                              "linear-gradient(90deg,var(--accent),var(--accent2))",
-                            borderRadius: 2,
-                            transition: "width 1.4s ease",
-                          }}
-                        />
-                      </div>
+          {loadingSkills ? (
+            <SkeletonSkills />
+          ) : (
+            <div className="skills-grid">
+              {Object.entries(grouped).map(
+                ([cat, catSkills]: [string, any]) => (
+                  <div
+                    key={cat}
+                    style={{
+                      background: "var(--card)",
+                      border: "1px solid var(--border)",
+                      borderRadius: 12,
+                      padding: 20,
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: "monospace",
+                        fontSize: 10,
+                        letterSpacing: ".14em",
+                        textTransform: "uppercase",
+                        color: "var(--accent)",
+                        marginBottom: 16,
+                      }}
+                    >
+                      {cat}
                     </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 12,
+                      }}
+                    >
+                      {catSkills.map((sk: any) => (
+                        <div key={sk._id}>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              marginBottom: 5,
+                            }}
+                          >
+                            <span
+                              style={{ fontSize: 13, color: "var(--text)" }}
+                            >
+                              {sk.name}
+                            </span>
+                            <span
+                              style={{
+                                fontFamily: "monospace",
+                                fontSize: 11,
+                                color: "var(--accent)",
+                              }}
+                            >
+                              {sk.level}%
+                            </span>
+                          </div>
+                          <div
+                            style={{
+                              height: 2,
+                              background: "var(--border)",
+                              borderRadius: 2,
+                              overflow: "hidden",
+                            }}
+                          >
+                            <div
+                              style={{
+                                height: "100%",
+                                width: `${sk.level}%`,
+                                background:
+                                  "linear-gradient(90deg,var(--accent),var(--accent2))",
+                                borderRadius: 2,
+                                transition: "width 1.4s ease",
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ),
+              )}
+            </div>
+          )}
         </div>
       </section>
 
@@ -665,7 +982,9 @@ export default function PortfolioPage() {
           <h2 className="section-heading">
             Things I've <span style={{ color: "var(--accent)" }}>Built.</span>
           </h2>
-          {projects.length === 0 ? (
+          {loadingProjects ? (
+            <SkeletonProjects />
+          ) : projects.length === 0 ? (
             <div
               style={{
                 textAlign: "center",
@@ -690,7 +1009,6 @@ export default function PortfolioPage() {
                     overflow: "hidden",
                   }}
                 >
-                  {/* Card image / placeholder */}
                   <div
                     style={{
                       height: 170,
@@ -769,7 +1087,6 @@ export default function PortfolioPage() {
                       </div>
                     )}
                   </div>
-                  {/* Card body */}
                   <div style={{ padding: 20 }}>
                     <div
                       style={{
@@ -874,7 +1191,9 @@ export default function PortfolioPage() {
           <h2 className="section-heading">
             Where I've <span style={{ color: "var(--accent)" }}>Grown.</span>
           </h2>
-          {experiences.length === 0 ? (
+          {loadingExp ? (
+            <SkeletonExperience />
+          ) : experiences.length === 0 ? (
             <div
               style={{
                 textAlign: "center",
@@ -994,7 +1313,6 @@ export default function PortfolioPage() {
               borderRadius: 16,
             }}
           >
-            {/* Left: info */}
             <div className="contact-info">
               <h2
                 style={{
@@ -1025,75 +1343,108 @@ export default function PortfolioPage() {
                 or freelance projects. If you have something, I'd love to hear
                 about it.
               </p>
-              {[
-                {
-                  icon: "📧",
-                  text: profile?.email || "your@email.com",
-                  href: `mailto:${profile?.email}`,
-                },
-                {
-                  icon: "💼",
-                  text: "LinkedIn",
-                  href: profile?.linkedin || "#",
-                },
-                { icon: "🐙", text: "GitHub", href: profile?.github || "#" },
-                {
-                  icon: "📍",
-                  text: profile?.location || "Surat, Gujarat · Remote OK",
-                  href: "#",
-                },
-              ].map(({ icon, text, href }) => (
-                <a
-                  key={text}
-                  href={href}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    fontFamily: "monospace",
-                    fontSize: 12,
-                    color: "var(--muted)",
-                    textDecoration: "none",
-                    marginBottom: 12,
-                    transition: "color .2s",
-                  }}
-                  onMouseOver={(e) =>
-                    (e.currentTarget.style.color = "var(--accent)")
-                  }
-                  onMouseOut={(e) =>
-                    (e.currentTarget.style.color = "var(--muted)")
-                  }
-                >
-                  <div
-                    style={{
-                      width: 36,
-                      height: 36,
-                      background: "var(--surface)",
-                      border: "1px solid var(--border)",
-                      borderRadius: 8,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: 14,
-                      flexShrink: 0,
-                    }}
-                  >
-                    {icon}
-                  </div>
-                  <span
-                    style={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {text}
-                  </span>
-                </a>
-              ))}
+              {loadingProfile
+                ? [1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
+                        marginBottom: 12,
+                      }}
+                    >
+                      <div
+                        style={{
+                          ...shimmer,
+                          width: 36,
+                          height: 36,
+                          borderRadius: 8,
+                          flexShrink: 0,
+                        }}
+                      />
+                      <div
+                        style={{
+                          ...shimmer,
+                          height: 13,
+                          width: "55%",
+                          borderRadius: 3,
+                        }}
+                      />
+                    </div>
+                  ))
+                : [
+                    {
+                      icon: "📧",
+                      text: profile?.email || "your@email.com",
+                      href: `mailto:${profile?.email}`,
+                    },
+                    {
+                      icon: "💼",
+                      text: "LinkedIn",
+                      href: profile?.linkedin || "#",
+                    },
+                    {
+                      icon: "🐙",
+                      text: "GitHub",
+                      href: profile?.github || "#",
+                    },
+                    {
+                      icon: "📍",
+                      text: profile?.location || "Surat, Gujarat · Remote OK",
+                      href: "#",
+                    },
+                  ].map(({ icon, text, href }) => (
+                    <a
+                      key={text}
+                      href={href}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
+                        fontFamily: "monospace",
+                        fontSize: 12,
+                        color: "var(--muted)",
+                        textDecoration: "none",
+                        marginBottom: 12,
+                        transition: "color .2s",
+                      }}
+                      onMouseOver={(e) =>
+                        (e.currentTarget.style.color = "var(--accent)")
+                      }
+                      onMouseOut={(e) =>
+                        (e.currentTarget.style.color = "var(--muted)")
+                      }
+                    >
+                      <div
+                        style={{
+                          width: 36,
+                          height: 36,
+                          background: "var(--surface)",
+                          border: "1px solid var(--border)",
+                          borderRadius: 8,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: 14,
+                          flexShrink: 0,
+                        }}
+                      >
+                        {icon}
+                      </div>
+                      <span
+                        style={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {text}
+                      </span>
+                    </a>
+                  ))}
             </div>
 
-            {/* Right: form */}
             <form className="contact-form" onSubmit={handleContact}>
               {[
                 { label: "Name", key: "name", type: "text", ph: "Rohan Mehta" },
@@ -1259,8 +1610,13 @@ export default function PortfolioPage() {
         </div>
       </footer>
 
-      {/* ── All responsive styles in one <style> block ── */}
       <style>{`
+        /* ── Shimmer keyframe ── */
+        @keyframes shimmer {
+          0%   { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+
         /* Reveal animation */
         .reveal.visible { opacity: 1 !important; transform: translateY(0) !important; }
 
@@ -1289,53 +1645,28 @@ export default function PortfolioPage() {
         .timeline-item { position: relative; margin-bottom: 44px; padding-left: 6px; }
         .timeline-dot  { position: absolute; left: -33px; top: 7px; width: 10px; height: 10px; background: var(--bg); border: 2px solid var(--accent); border-radius: 50%; }
 
-        /* Contact card: 2-col on tablet+ */
+        /* Contact card */
         .contact-card  { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 52px 56px; }
-        .contact-info  {}
         .contact-form  { display: flex; flex-direction: column; gap: 14px; }
 
         /* Footer */
         .footer-inner  { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
 
-        /* Desktop nav visible, hamburger hidden */
         .desktop-nav { display: flex !important; }
         .hamburger   { display: none !important; }
 
-        /* ───────────────────────────────────────── */
-        /* TABLET  ≤ 900px                           */
-        /* ───────────────────────────────────────── */
         @media (max-width: 900px) {
-          /* Contact: stack columns */
           .contact-card { grid-template-columns: 1fr; gap: 36px; padding: 36px 32px; }
         }
-
-        /* ───────────────────────────────────────── */
-        /* MOBILE  ≤ 640px                           */
-        /* ───────────────────────────────────────── */
         @media (max-width: 640px) {
-          /* Nav: hide desktop links, show hamburger */
           .desktop-nav { display: none !important; }
           .hamburger   { display: flex !important; }
-
-          /* Section padding */
           .section-pad { padding: 60px 20px; }
-
-          /* Skills: single column */
           .skills-grid { grid-template-columns: 1fr; }
-
-          /* Projects: single column */
           .projects-grid { grid-template-columns: 1fr; }
-
-          /* Contact: tighter padding */
           .contact-card { padding: 28px 20px; gap: 28px; }
-
-          /* Footer: stack */
           .footer-inner { flex-direction: column; gap: 8px; }
         }
-
-        /* ───────────────────────────────────────── */
-        /* SMALL MOBILE  ≤ 400px                     */
-        /* ───────────────────────────────────────── */
         @media (max-width: 400px) {
           .section-pad { padding: 48px 16px; }
           .contact-card { padding: 22px 16px; }

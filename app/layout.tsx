@@ -5,14 +5,16 @@ import { AuthProvider } from "@/hooks/useAuth";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Portfolio | MERN Stack Developer",
-  description: "Full-stack MERN developer portfolio — Surat, Gujarat",
+  title: "Bhavin Ghoghari | MERN Stack Developer",
+  description:
+    "MERN Stack Developer from Surat, Gujarat — building fast, accessible web apps with React, Node.js & MongoDB.",
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
+  themeColor: "#060a12",
 };
 
 export default function RootLayout({

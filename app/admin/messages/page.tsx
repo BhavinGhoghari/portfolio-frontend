@@ -316,7 +316,9 @@ export default function MessagesAdmin() {
             </div>
             <div style={{ marginTop: 16, textAlign: "right" }}>
               <a
-                href={`mailto:${viewing.email}?subject=Re: ${viewing.subject}`}
+                // href={`mailto:${viewing.email}?subject=Re: ${viewing.subject}`}
+                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${viewing.email}&su=Re: ${viewing.subject}&body=${viewing.message}`}
+                target="_blank"
                 style={{
                   fontFamily: "monospace",
                   fontSize: 12,

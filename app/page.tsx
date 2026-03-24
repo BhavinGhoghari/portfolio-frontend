@@ -474,57 +474,104 @@ const TiltCard = memo(
 TiltCard.displayName = "TiltCard";
 
 // ─── Animated skill bar ───────────────────────────────
+// const SkillBar = memo(({ name, level }: { name: string; level: number }) => {
+//   const ref = useRef(null);
+//   const inView = useInView(ref, { once: true, margin: "-30px" });
+//   return (
+//     <div ref={ref}>
+//       <div
+//         style={{
+//           display: "flex",
+//           justifyContent: "space-between",
+//           marginBottom: 5,
+//         }}
+//       >
+//         <span
+//           style={{
+//             fontSize: 13,
+//             color: "var(--text)",
+//             fontFamily: "var(--font-body, system-ui)",
+//           }}
+//         >
+//           {name}
+//         </span>
+//         {/* <span
+//           style={{
+//             fontFamily: "var(--font-mono, monospace)",
+//             fontSize: 11,
+//             color: "var(--accent)",
+//           }}
+//         >
+//           {level}%
+//         </span> */}
+//       </div>
+//       {/* <div
+//         style={{
+//           height: 2,
+//           background: "var(--border)",
+//           borderRadius: 2,
+//           overflow: "hidden",
+//         }}
+//       >
+//         <motion.div
+//           initial={{ width: 0 }}
+//           animate={inView ? { width: `${level}%` } : {}}
+//           transition={{ duration: 1.3, ease: EASE, delay: 0.15 }}
+//           style={{
+//             height: "100%",
+//             borderRadius: 2,
+//             background: "linear-gradient(90deg,var(--accent),var(--accent2))",
+//           }}
+//         />
+//       </div> */}
+//     </div>
+//   );
+// });
 const SkillBar = memo(({ name, level }: { name: string; level: number }) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-30px" });
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-20px" });
+
   return (
-    <div ref={ref}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: 5,
+    <motion.span
+      ref={ref}
+      initial={{ opacity: 0, y: 10, scale: 0.92 }}
+      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ y: -2, scale: 1.05 }}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 7,
+        padding: "6px 14px",
+        borderRadius: 100,
+        fontSize: 12,
+        fontFamily: "var(--font-mono, monospace)",
+        letterSpacing: ".04em",
+        color: "var(--muted)",
+        background: "rgba(56,189,248,.04)",
+        border: "1px solid rgba(56,189,248,.14)",
+        cursor: "default",
+        transition: "border-color .2s, background .2s",
+      }}
+    >
+      <motion.span
+        animate={{ scale: [1, 1.6, 1], opacity: [0.7, 1, 0.7] }}
+        transition={{
+          repeat: Infinity,
+          duration: 2.8,
+          ease: "easeInOut",
+          delay: Math.random() * 2,
         }}
-      >
-        <span
-          style={{
-            fontSize: 13,
-            color: "var(--text)",
-            fontFamily: "var(--font-body, system-ui)",
-          }}
-        >
-          {name}
-        </span>
-        <span
-          style={{
-            fontFamily: "var(--font-mono, monospace)",
-            fontSize: 11,
-            color: "var(--accent)",
-          }}
-        >
-          {level}%
-        </span>
-      </div>
-      <div
         style={{
-          height: 2,
-          background: "var(--border)",
-          borderRadius: 2,
-          overflow: "hidden",
+          width: 5,
+          height: 5,
+          borderRadius: "50%",
+          background: "var(--accent)",
+          flexShrink: 0,
         }}
-      >
-        <motion.div
-          initial={{ width: 0 }}
-          animate={inView ? { width: `${level}%` } : {}}
-          transition={{ duration: 1.3, ease: EASE, delay: 0.15 }}
-          style={{
-            height: "100%",
-            borderRadius: 2,
-            background: "linear-gradient(90deg,var(--accent),var(--accent2))",
-          }}
-        />
-      </div>
-    </div>
+      />
+      {name}
+    </motion.span>
   );
 });
 SkillBar.displayName = "SkillBar";
@@ -1614,15 +1661,29 @@ export default function PortfolioPage() {
                             style={{
                               display: "flex",
                               flexDirection: "column",
+                              // flexWrap: "wrap",
+                              // gap: 8,
                               gap: 14,
                             }}
                           >
-                            {catSkills.map((sk: any) => (
-                              <SkillBar
+                            {catSkills.map((sk: any, i: number) => (
+                              <motion.div
                                 key={sk._id}
-                                name={sk.name}
-                                level={sk.level}
-                              />
+                                variants={{
+                                  hidden: {},
+                                  show: {
+                                    transition: { staggerChildren: 0.07 },
+                                  },
+                                }}
+                                custom={i}
+                              >
+                                <SkillBar name={sk.name} level={sk.level} />
+                              </motion.div>
+                              // <SkillBar
+                              //   key={sk._id}
+                              //   name={sk.name}
+                              //   level={sk.level}
+                              // />
                             ))}
                           </div>
                         </div>

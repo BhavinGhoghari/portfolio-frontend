@@ -229,6 +229,7 @@ export default function ProjectsAdmin() {
           background: "var(--card)",
           borderRadius: 12,
           overflow: "hidden",
+          width: "100%",
         }}
         pagination={{ pageSize: 8, showSizeChanger: false }}
       />

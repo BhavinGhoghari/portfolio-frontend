@@ -183,6 +183,7 @@ export default function MessagesAdmin() {
           background: "var(--card)",
           borderRadius: 12,
           overflow: "hidden",
+          width: "100%",
         }}
         pagination={{ pageSize: 10 }}
         rowClassName={(r: any) => (r.read ? "" : "unread-row")}

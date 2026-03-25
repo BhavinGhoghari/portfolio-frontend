@@ -17,6 +17,18 @@ import {
   sendMessage,
 } from "@/lib/api";
 import toast from "react-hot-toast";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+// --- Validation Schema ---
+const contactSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  subject: Yup.string().required("Subject is required"),
+  message: Yup.string()
+    .required("Message is required")
+    .min(10, "Message must be at least 10 characters"),
+});
 
 // ─── Constants ───────────────────────────────────────
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -804,13 +816,30 @@ export default function PortfolioPage() {
   const [projects, setProjects] = useState<any[]>([]);
   const [skills, setSkills] = useState<any[]>([]);
   const [exps, setExps] = useState<any[]>([]);
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
   const [sending, setSending] = useState(false);
+  
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+    validationSchema: contactSchema,
+    onSubmit: async (values, { resetForm }) => {
+      setSending(true);
+      try {
+        await sendMessage(values);
+        toast.success("Message sent! I'll reply within 24h 🚀");
+        resetForm();
+      } catch {
+        toast.error("Failed to send. Try emailing directly.");
+      } finally {
+        setSending(false);
+      }
+    },
+  });
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [navScrolled, setNavScrolled] = useState(false);
   const [modal, setModal] = useState<any>(null);
@@ -875,19 +904,19 @@ export default function PortfolioPage() {
     };
   }, []);
 
-  const handleContact = async (e: any) => {
-    e.preventDefault();
-    setSending(true);
-    try {
-      await sendMessage(form);
-      toast.success("Message sent! I'll reply within 24h 🚀");
-      setForm({ name: "", email: "", subject: "", message: "" });
-    } catch {
-      toast.error("Failed to send. Try emailing directly.");
-    } finally {
-      setSending(false);
-    }
-  };
+  // const handleContact = async (e: any) => {
+  //   e.preventDefault();
+  //   setSending(true);
+  //   try {
+  //     await sendMessage(form);
+  //     toast.success("Message sent! I'll reply within 24h 🚀");
+  //     setForm({ name: "", email: "", subject: "", message: "" });
+  //   } catch {
+  //     toast.error("Failed to send. Try emailing directly.");
+  //   } finally {
+  //     setSending(false);
+  //   }
+  // };
 
   const grouped = skills.reduce((acc: any, s: any) => {
     if (!acc[s.category]) acc[s.category] = [];
@@ -2337,7 +2366,7 @@ export default function PortfolioPage() {
               </div>
 
               {/* Right: form */}
-              <form className="contact-form" onSubmit={handleContact}>
+              <form className="contact-form" onSubmit={formik.handleSubmit}>
                 {[
                   {
                     label: "Name",
@@ -2374,16 +2403,16 @@ export default function PortfolioPage() {
                     </label>
                     <input
                       type={type}
-                      value={(form as any)[key]}
-                      onChange={(e) =>
-                        setForm((f) => ({ ...f, [key]: e.target.value }))
-                      }
+                      {...formik.getFieldProps(key)}
                       placeholder={ph}
-                      required={key !== "subject"}
                       style={{
                         width: "100%",
                         background: "rgba(8,14,26,.75)",
-                        border: "1px solid var(--border)",
+                        border:
+                          formik.touched[key as keyof typeof formik.values] &&
+                          formik.errors[key as keyof typeof formik.values]
+                            ? "1px solid #ef4444"
+                            : "1px solid var(--border)",
                         borderRadius: 10,
                         padding: "12px 16px",
                         color: "var(--text)",
@@ -2400,10 +2429,28 @@ export default function PortfolioPage() {
                           "0 0 0 3px rgba(56,189,248,.07)";
                       }}
                       onBlur={(e) => {
-                        e.target.style.borderColor = "var(--border)";
+                        formik.handleBlur(e);
+                        e.target.style.borderColor =
+                          formik.touched[key as keyof typeof formik.values] &&
+                          formik.errors[key as keyof typeof formik.values]
+                            ? "#ef4444"
+                            : "var(--border)";
                         e.target.style.boxShadow = "none";
                       }}
                     />
+                    {formik.touched[key as keyof typeof formik.values] &&
+                      formik.errors[key as keyof typeof formik.values] && (
+                        <div
+                          style={{
+                            ...mono,
+                            fontSize: 10,
+                            color: "#ef4444",
+                            marginTop: 4,
+                          }}
+                        >
+                          {formik.errors[key as keyof typeof formik.values]}
+                        </div>
+                      )}
                   </div>
                 ))}
                 <div>
@@ -2421,17 +2468,16 @@ export default function PortfolioPage() {
                     Message
                   </label>
                   <textarea
-                    value={form.message}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, message: e.target.value }))
-                    }
+                    {...formik.getFieldProps("message")}
                     placeholder="Tell me about the opportunity..."
-                    required
                     rows={4}
                     style={{
                       width: "100%",
                       background: "rgba(8,14,26,.75)",
-                      border: "1px solid var(--border)",
+                      border:
+                        formik.touched.message && formik.errors.message
+                          ? "1px solid #ef4444"
+                          : "1px solid var(--border)",
                       borderRadius: 10,
                       padding: "12px 16px",
                       color: "var(--text)",
@@ -2449,10 +2495,26 @@ export default function PortfolioPage() {
                         "0 0 0 3px rgba(56,189,248,.07)";
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = "var(--border)";
+                      formik.handleBlur(e);
+                      e.target.style.borderColor =
+                        formik.touched.message && formik.errors.message
+                          ? "#ef4444"
+                          : "var(--border)";
                       e.target.style.boxShadow = "none";
                     }}
                   />
+                  {formik.touched.message && formik.errors.message && (
+                    <div
+                      style={{
+                        ...mono,
+                        fontSize: 10,
+                        color: "#ef4444",
+                        marginTop: 4,
+                      }}
+                    >
+                      {formik.errors.message}
+                    </div>
+                  )}
                 </div>
                 <motion.button
                   type="submit"

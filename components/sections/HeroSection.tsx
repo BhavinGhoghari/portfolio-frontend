@@ -11,11 +11,14 @@ interface HeroSectionProps {
   loading?: boolean;
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({ profile, loading = false }) => {
+const HeroSection: React.FC<HeroSectionProps> = ({
+  profile,
+  loading = false,
+}) => {
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 700], [0, 120]);
   const heroO = useTransform(scrollY, [0, 420], [1, 0]);
-
+  console.log("Profile Detial:- ", profile);
   return (
     <section
       style={{
@@ -89,7 +92,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ profile, loading = false }) =
                     color: "var(--accent)",
                   }}
                 >
-                  {profile?.available ? "Available for work" : "Not available"} · {profile?.location || "Surat, Gujarat"}
+                  {profile?.available ? "Available for work" : "Not available"}{" "}
+                  · {profile?.location || "Surat, Gujarat, India"}
                 </span>
               </motion.div>
             </motion.div>
@@ -240,6 +244,24 @@ const HeroSection: React.FC<HeroSectionProps> = ({ profile, loading = false }) =
                 </motion.span>
               ))}
             </motion.div>
+
+            {/* Bio paragraph */}
+            {profile?.bio && (
+              <motion.p
+                variants={fadeUp}
+                style={{
+                  fontSize: fluid(15, 17),
+                  lineHeight: 1.6,
+                  color: "var(--muted)",
+                  maxWidth: 600,
+                  margin: "24px auto 32px",
+                  fontWeight: 400,
+                  textAlign: "center",
+                }}
+              >
+                {profile.bio}
+              </motion.p>
+            )}
 
             {/* CTA Buttons */}
             <motion.div

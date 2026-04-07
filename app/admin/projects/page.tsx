@@ -12,12 +12,14 @@ import {
   Space,
   Popconfirm,
   InputNumber,
+  Upload,
 } from "antd";
 import {
   PlusOutlined,
   EditOutlined,
   DeleteOutlined,
   StarOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import toast from "react-hot-toast";
 import {
@@ -25,6 +27,7 @@ import {
   createProject,
   updateProject,
   deleteProject,
+  uploadImage,
 } from "@/lib/api";
 
 export default function ProjectsAdmin() {
@@ -33,6 +36,7 @@ export default function ProjectsAdmin() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [saving, setSaving] = useState(false);
+  const [fileList, setFileList] = useState<any[]>([]);
   const [form] = Form.useForm();
 
   const fetch = async () => {
@@ -53,12 +57,14 @@ export default function ProjectsAdmin() {
 
   const openAdd = () => {
     setEditing(null);
+    setFileList([]);
     form.resetFields();
     form.setFieldsValue({ status: "live", featured: false, order: 0 });
     setModalOpen(true);
   };
   const openEdit = (p: any) => {
     setEditing(p);
+    setFileList([]);
     form.setFieldsValue({ ...p, tags: p.tags?.join(", ") });
     setModalOpen(true);
   };
@@ -66,8 +72,19 @@ export default function ProjectsAdmin() {
   const onSave = async () => {
     try {
       const vals = await form.validateFields();
+      setSaving(true);
+
+      let finalImageUrl = vals.imageUrl;
+      if (fileList.length > 0) {
+        const formData = new FormData();
+        formData.append("image", fileList[0].originFileObj as File);
+        const uploadRes = await uploadImage(formData);
+        finalImageUrl = uploadRes.data.url;
+      }
+
       const data = {
         ...vals,
+        imageUrl: finalImageUrl,
         tags: vals.tags
           ? vals.tags
               .split(",")
@@ -75,7 +92,6 @@ export default function ProjectsAdmin() {
               .filter(Boolean)
           : [],
       };
-      setSaving(true);
       if (editing) {
         await updateProject(editing._id, data);
         toast.success("Project updated!");
@@ -281,11 +297,49 @@ export default function ProjectsAdmin() {
               <Input placeholder="https://github.com/..." />
             </Form.Item>
           </div>
-          <Form.Item
-            name="imageUrl"
-            label={<span style={labelStyle}>Image URL</span>}
-          >
-            <Input placeholder="https://... (leave blank for gradient)" />
+          <Form.Item name="imageUrl" hidden>
+            <Input />
+          </Form.Item>
+          <Form.Item label={<span style={labelStyle}>Project Image</span>}>
+            <Upload
+              listType="picture"
+              maxCount={1}
+              fileList={fileList}
+              beforeUpload={() => false}
+              onChange={({ fileList: newFileList }) => setFileList(newFileList)}
+            >
+              <Button icon={<UploadOutlined />}>Select New Image</Button>
+            </Upload>
+            {editing?.imageUrl && fileList.length === 0 && (
+              <div style={{ marginTop: 8, display: "inline-block" }}>
+                <span style={{ fontSize: 12, color: "var(--muted)" }}>
+                  Current Image:
+                </span>
+                <div style={{ position: "relative", marginTop: 4 }}>
+                  <img
+                    src={editing.imageUrl}
+                    alt="Current"
+                    style={{
+                      display: "block",
+                      maxHeight: 60,
+                      borderRadius: 4,
+                    }}
+                  />
+                  <Button
+                    danger
+                    type="primary"
+                    shape="circle"
+                    size="small"
+                    icon={<DeleteOutlined />}
+                    style={{ position: "absolute", top: -8, right: -8, padding: 0, width: 20, height: 20, minWidth: 20 }}
+                    onClick={() => {
+                        setEditing({ ...editing, imageUrl: "" });
+                        form.setFieldsValue({ imageUrl: "" });
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </Form.Item>
           <Form.Item
             name="tags"
@@ -320,7 +374,7 @@ export default function ProjectsAdmin() {
               <Switch checkedChildren="Yes" unCheckedChildren="No" />
             </Form.Item>
           </div>
-          <style>{`.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.form-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 16px}@media(max-width:560px){.form-2col,.form-3col{grid-template-columns:1fr}}`}</style>
+          <style>{`.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.form-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 16px}@media(max-width:560px){.form-2col,.form-3col{grid-template-columns:1fr}} .ant-input-number-input, .ant-upload-list-item-name { color: var(--text, #fff) !important; }`}</style>
         </Form>
       </Modal>
     </div>

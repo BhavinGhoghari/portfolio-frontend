@@ -3,6 +3,8 @@ import { Cormorant_Garamond, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "@/hooks/useAuth";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -53,6 +55,8 @@ export default function RootLayout({
       <body>
         <AntdRegistry>
           <AuthProvider>
+            <Analytics />
+            <SpeedInsights />
             {children}
             <Toaster
               position="top-right"
